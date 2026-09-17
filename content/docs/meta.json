@@ -1,0 +1,13 @@
+{
+  "title": "Developer documentation",
+  "pages": [
+    "index",
+    "---Start building---",
+    "getting-started",
+    "---Connect---",
+    "api",
+    "mcp",
+    "---Customize---",
+    "guides"
+  ]
+}

@@ -1,0 +1,63 @@
+---
+title: Clients with API keys
+description: Connect Codex or another HTTP MCP client using a scoped workspace key.
+---
+
+<Steps>
+<Step>
+
+## Create a workspace key
+
+Open **Integrations → API keys**. Create a named key with **Read only** or **Read/write** access. Copy the secret when it is revealed and save it privately in your client's environment.
+
+</Step>
+<Step>
+
+## Configure the client
+
+For Codex, add this entry to its MCP configuration:
+
+```toml title="Codex MCP configuration"
+[mcp_servers.my_app]
+url = "https://your-app.example/api/mcp"
+bearer_token_env_var = "WORKSPACE_API_KEY"
+```
+
+Supply `WORKSPACE_API_KEY` to the process that runs Codex. The application's `.env` does not configure an independently launched client. Restart or reconnect after changing the client's environment.
+
+For other clients, select remote Streamable HTTP transport, set the same server URL, and configure this header through the client's secret storage:
+
+```http title="Authentication header"
+Authorization: Bearer YOUR_WORKSPACE_API_KEY
+```
+
+Client configuration syntax varies. Use its documented method for passing a secret environment variable.
+
+</Step>
+<Step>
+
+## Discover and call the tools
+
+Ask the assistant to list its available workspace tools, then ask:
+
+> Show the ID and name of my connected workspace.
+
+A read-only key exposes `get_workspace`. Read/write keys also expose `rename_workspace`.
+
+</Step>
+</Steps>
+
+## Rotate or revoke a key
+
+Create a replacement key, update the client environment, verify the connection, then revoke the old key. Revoke a key immediately when it should no longer have access.
+
+The 60-request per-minute budget is shared across REST and MCP for the same key. Give independent integrations their own named keys when they need independent budgets and revocation.
+
+<Cards>
+  <Card title="Tool reference" href="/docs/mcp/tools">
+    Exact arguments, outputs, and permission rules.
+  </Card>
+  <Card title="Troubleshooting" href="/docs/mcp/troubleshooting">
+    Resolve discovery, authentication, and rate-limit errors.
+  </Card>
+</Cards>

@@ -1,0 +1,91 @@
+---
+title: Claude with OAuth
+description: Connect Claude through browser sign-in, workspace selection, and explicit permission.
+---
+
+## Before you connect
+
+Your application must be reachable at an HTTPS URL, and kickstart must have configured the Supabase OAuth server. You need an **Owner** or **Admin** role in the workspace you want to connect.
+
+<Callout title="Why localhost does not work with Claude">
+  An address such as `http://localhost:3000` points to the app running on your
+  computer. Claude connects over the internet and cannot reach that address.
+  Publish the app online, then copy the MCP URL from the published app. It will
+  start with `https://`. Follow [deployment
+  setup](/docs/getting-started/setup#deploy) to configure the matching sign-in
+  and connection URLs.
+</Callout>
+
+You can still test the local URL with an MCP client running on the same computer.
+Developers can also use an HTTPS tunnel, provided the application's OAuth setup
+uses that same address.
+
+## Connect Claude with OAuth
+
+<Steps>
+<Step>
+
+### Add a custom connector
+
+In Claude, open **Customize → Connectors → Add custom connector**. Team and Enterprise owners may need to add it under **Organization settings → Connectors** first. Give it a recognizable name and paste the URL from **Integrations → MCP** in your published app:
+
+```text title="Server URL"
+https://your-app.example/api/mcp
+```
+
+The URL contains no API key or other secret. A listing in a public connector directory is not required. Availability can depend on the client and your organization's policies.
+
+If Claude asks for an authentication method, choose **Sign in now**. If it asks
+how to identify the OAuth client, choose **Register automatically**; this template
+supports automatic client registration. No manually entered client ID, client
+secret, or API key is needed for this flow. See [Claude's connector instructions](https://claude.com/docs/connectors/custom/remote-mcp)
+if your dialog looks different.
+
+</Step>
+<Step>
+
+### Sign in and select your workspace
+
+Start the connection. Your application opens its sign-in and consent flow. Select the workspace that Claude should access.
+
+</Step>
+<Step>
+
+### Approve a permission level
+
+| Access              | Tools available                                |
+| ------------------- | ---------------------------------------------- |
+| **Read only**       | List the workspace and read its details        |
+| **Read and rename** | The same reads, plus updating its display name |
+
+Approve the connection and return to Claude. The app stores this permission in a workspace-specific connection grant.
+
+</Step>
+<Step>
+
+### Try your first tool call
+
+Ask Claude:
+
+> List my connected workspaces and show their IDs.
+
+For a write-enabled connection, try:
+
+> Rename my connected workspace to Acme Studio.
+
+Refresh the application to see an externally changed name.
+
+</Step>
+</Steps>
+
+## Disconnect or change access
+
+Disconnect under **Integrations → MCP → Connected applications**. To change the selected workspace or permission, disconnect and authorize again. A read-only connection does not advertise the rename tool.
+
+If the app shows **Access removed**, use **Finish disconnect** to complete provider cleanup before reconnecting. See [troubleshooting](/docs/mcp/troubleshooting).
+
+<Callout title="Verify your deployment">
+  The template's automated OAuth checks cover sign-in, consent, PKCE, refresh,
+  and revocation. A real connection through Claude on your deployed origin is a
+  separate release check.
+</Callout>

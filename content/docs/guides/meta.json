@@ -1,0 +1,6 @@
+{
+  "title": "Build & extend",
+  "icon": "Wrench",
+  "defaultOpen": false,
+  "pages": ["operations", "documentation", "components", "seo"]
+}

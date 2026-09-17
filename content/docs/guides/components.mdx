@@ -1,0 +1,207 @@
+---
+title: Component cookbook
+description: Live Fumadocs examples and copyable patterns for clear, consistent guides.
+---
+
+All components below are registered in `components/docs/mdx.tsx`. Use them directly in an MDX page. Prefer the simplest component that helps the reader complete the task.
+
+## Cards for next steps
+
+<Cards>
+  <IconCard icon="api" title="REST API reference" href="/docs/api">
+    Explore the workspace endpoints.
+  </IconCard>
+  <IconCard icon="mcp" title="MCP server" href="/docs/mcp">
+    Connect an assistant to your workspace.
+  </IconCard>
+</Cards>
+
+```mdx title="Cards"
+<Cards>
+  <Card title="REST API reference" href="/docs/api">
+    Explore the workspace endpoints.
+  </Card>
+  <Card title="MCP server" href="/docs/mcp">
+    Connect an assistant to your workspace.
+  </Card>
+</Cards>
+```
+
+For the icon treatment shown above, use the template's `IconCard` wrapper with `icon="api"`, `icon="mcp"`, or `icon="key"`. It wraps the native Fumadocs Card and keeps decorative icons out of the Markdown export.
+
+```mdx title="Card with an icon"
+<IconCard icon="api" title="REST API reference" href="/docs/api">
+  Explore the workspace endpoints.
+</IconCard>
+```
+
+## Callouts for important context
+
+<Callout title="One connection, one workspace">
+  Every API key and OAuth grant authorizes a specific workspace.
+</Callout>
+
+<Callout type="warn" title="Write permission required">
+  Renaming a workspace requires a read/write key or an OAuth grant with
+  read-and-rename access.
+</Callout>
+
+```mdx title="Callout"
+<Callout type="warn" title="Write permission required">
+  Explain the requirement and the action the reader should take.
+</Callout>
+```
+
+## Steps for workflows
+
+<Steps>
+<Step>
+
+### Create a key
+
+Open Integrations and create a named key.
+
+</Step>
+<Step>
+
+### Make a request
+
+Pass the key in the Authorization header from your server or terminal.
+
+</Step>
+</Steps>
+
+```mdx title="Steps"
+<Steps>
+  <Step>
+
+### Create a key
+
+Explain the first action.
+
+  </Step>
+  <Step>
+
+### Make a request
+
+Explain the next action.
+
+  </Step>
+</Steps>
+```
+
+## Tabs and code blocks
+
+Tabs keep alternatives together. Our request examples share `groupId="docs-request-language"` with `persist`, so the selected language follows the reader between guides. Use explicit `value` props on every tab.
+
+<Tabs items={["curl", "TypeScript"]} groupId="docs-request-language" persist>
+<Tab value="curl">
+
+```bash title="Terminal"
+curl https://your-app.example/api/v1/workspace \
+  -H "Authorization: Bearer $WORKSPACE_API_KEY"
+```
+
+</Tab>
+<Tab value="TypeScript">
+
+```ts title="Server-side request"
+const response = await fetch("https://your-app.example/api/v1/workspace", {
+  headers: { Authorization: `Bearer ${process.env.WORKSPACE_API_KEY}` },
+});
+```
+
+</Tab>
+</Tabs>
+
+````mdx title="Tabs with labeled code"
+<Tabs items={["curl", "TypeScript"]} groupId="docs-request-language" persist>
+  <Tab value="curl">
+
+```bash title="Terminal"
+curl https://your-app.example/api/v1/workspace
+```
+
+  </Tab>
+  <Tab value="TypeScript">Your TypeScript example goes here.</Tab>
+</Tabs>
+````
+
+The abbreviated source example above demonstrates formatting. Real workspace requests also require the Authorization header shown in the live example.
+
+## Accordions for troubleshooting
+
+<Accordions type="multiple">
+  <Accordion title="Why is the rename tool missing?">
+    Read-only connections advertise only read tools. Reconnect with
+    read-and-rename access to enable renaming.
+  </Accordion>
+  <Accordion title="Can I use this pattern in my own guides?">
+    Yes. Group related optional details under clear symptom or question labels.
+    Keep essential instructions visible in the page.
+  </Accordion>
+</Accordions>
+
+```mdx title="Accordion"
+<Accordions type="multiple">
+  <Accordion title="Why is the rename tool missing?">
+    Explain the cause and how to resolve it.
+  </Accordion>
+</Accordions>
+```
+
+## File trees for orientation
+
+<Files>
+  <Folder name="content/docs" defaultOpen>
+    <File name="meta.json" />
+    <Folder name="guides" defaultOpen>
+      <File name="your-feature.mdx" />
+    </Folder>
+  </Folder>
+</Files>
+
+```mdx title="File tree"
+<Files>
+  <Folder name="content/docs" defaultOpen>
+    <File name="meta.json" />
+    <Folder name="guides" defaultOpen>
+      <File name="your-feature.mdx" />
+    </Folder>
+  </Folder>
+</Files>
+```
+
+## Field tables and endpoints
+
+<Endpoint method="PATCH" path="/api/v1/workspace" permission="Read/write" />
+
+<TypeTable
+  type={{
+    name: {
+      type: "string",
+      required: true,
+      description: "New display name, 2–80 characters after trimming.",
+    },
+  }}
+/>
+
+```mdx title="Endpoint and request fields"
+<Endpoint method="PATCH" path="/api/v1/workspace" permission="Read/write" />
+
+<TypeTable
+  type={{
+    name: {
+      type: "string",
+      required: true,
+      description: "New display name, 2–80 characters after trimming.",
+    },
+  }}
+/>
+```
+
+`Endpoint` is the template's small presentational component. `TypeTable` is provided by Fumadocs. Keep the descriptions consistent with the [generated OpenAPI document](/api/openapi).
+
+## More Fumadocs resources
+
+The [official component library](https://www.fumadocs.dev/docs/ui/components) includes additional options such as zoomable images, inline tables of contents, and dynamic code blocks. Add them when your content needs them, register them in the shared MDX file, and verify their Markdown output and mobile behavior.

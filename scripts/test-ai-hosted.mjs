@@ -1,0 +1,13 @@
+import { readFile } from "node:fs/promises";
+import { parseEnv } from "node:util";
+import { createApi, migrationQuery } from "./kickstart/core.mjs";
+const env={...process.env,...parseEnv(await readFile(new URL('../.env',import.meta.url),'utf8'))};
+if(env.HOSTED_TEST_PROJECT_REF!==env.SUPABASE_PROJECT_REF) throw new Error('Explicit hosted test target must match the authorized project.');
+const api=createApi(env);
+const [state]=await api.query("select to_regclass('private.billing_accounts') is not null as billing, to_regclass('private.ai_generations') is not null as ai");
+let query='begin;\n';
+if(!state.ai) query=migrationQuery('20260914023100_workspace_ai.sql',await readFile(new URL('../supabase/migrations/20260914023100_workspace_ai.sql',import.meta.url),'utf8')).replace(/commit;\s*$/,'');
+query+='\n'+await readFile(new URL('../supabase/migrations/20260914040000_workspace_ai_server_access.sql',import.meta.url),'utf8');
+query+='\n'+(await readFile(new URL('../tests/database/ai-isolation.sql',import.meta.url),'utf8')).replace(/^begin;\s*/,'');
+await api.query(query,false);
+console.log('Hosted AI tests passed: tenant and write isolation, reservations, duplicate retries/settlement, zero balance, failure refunds, checkpoints, abandoned recovery, late completion fencing, and one-time workspace grants. All test schema and fixtures rolled back.');

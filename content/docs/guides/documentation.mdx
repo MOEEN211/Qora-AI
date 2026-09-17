@@ -1,0 +1,130 @@
+---
+title: Write documentation
+description: Add pages, organize nested navigation, and make this documentation your own.
+---
+
+This site uses **Fumadocs UI, Core, and MDX** inside the existing Next.js application. Content lives alongside your code, and no separate documentation service is required.
+
+## Add a page
+
+Create an MDX file inside `content/docs` with a title and a short, useful description:
+
+```mdx title="content/docs/guides/reports.mdx"
+---
+title: Export a report
+description: Download the records in your workspace as a CSV file.
+---
+
+## Before you start
+
+Explain the permissions and information the reader needs.
+
+## Export your report
+
+Describe the actual steps in your implementation.
+```
+
+The file becomes `/docs/guides/reports`. Add `reports` to that folder's `meta.json` to place it in the sidebar. This example describes an authoring pattern; the starter does not include a report-export feature.
+
+## Create menu items with sub-items
+
+Folders create expandable sidebar groups. Each folder's `meta.json` controls its name, order, and default expansion state. Nest folders for a deeper hierarchy, as the API does with **REST API → Workspaces → Get workspace**.
+
+<Files>
+  <Folder name="content/docs" defaultOpen>
+    <File name="meta.json" />
+    <File name="index.mdx" />
+    <Folder name="api" defaultOpen>
+      <File name="meta.json" />
+      <File name="index.mdx" />
+      <Folder name="workspaces" defaultOpen>
+        <File name="meta.json" />
+        <File name="get.mdx" />
+        <File name="rename.mdx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+<Tabs items={["Section", "Subsection"]}>
+<Tab value="Section">
+
+```json title="content/docs/api/meta.json"
+{
+  "title": "REST API",
+  "icon": "Braces",
+  "defaultOpen": true,
+  "pages": ["index", "workspaces", "errors"]
+}
+```
+
+</Tab>
+<Tab value="Subsection">
+
+```json title="content/docs/api/workspaces/meta.json"
+{
+  "title": "Workspaces",
+  "defaultOpen": true,
+  "pages": ["get", "rename"]
+}
+```
+
+</Tab>
+</Tabs>
+
+An `index.mdx` gives the section itself a landing page. Without one, the section name simply expands its children. Use `defaultOpen: false` for secondary groups. The current icon allowlist in `lib/docs-source.ts` contains `BookOpen`, `Braces`, `Cable`, `Layers`, `Rocket`, and `Wrench`; add any additional Lucide icons there explicitly.
+
+Root-level separators such as `"---Connect---"` label related groups. Keep `root` unset for ordinary submenus: a root folder creates a separate navigation tree. When moving an existing public page, preserve its old URL with a redirect in `next.config.mjs`.
+
+## Use the component library
+
+The shared MDX registry in `components/docs/mdx.tsx` makes the supported components available without per-page imports. Use [the component cookbook](/docs/guides/components) for live examples and copyable source.
+
+| Component  | Use it for                                                    |
+| ---------- | ------------------------------------------------------------- |
+| Cards      | A small set of useful next destinations                       |
+| Callouts   | Prerequisites, permission requirements, or important behavior |
+| Steps      | Ordered workflows with headings and code                      |
+| Tabs       | Alternatives such as curl and TypeScript                      |
+| Accordions | Troubleshooting symptoms and optional detail                  |
+| Files      | Explaining where extension code lives                         |
+| TypeTable  | Field types, defaults, requirements, and descriptions         |
+| Endpoint   | Consistent HTTP method, path, and permission labels           |
+
+Code fences have syntax highlighting, filename labels, and copy buttons. Headings automatically create anchors and a page table of contents. Breadcrumbs, previous/next links, search, mobile navigation, and theme switching come from the shared Fumadocs layout.
+
+## Markdown for AI assistants
+
+Every guide has **Copy Markdown** and **View Markdown** actions. `/llms.txt` lists the public pages and `/llms-full.txt` contains their Markdown. These are generated from the same collection as the site.
+
+When introducing a custom MDX component, add its text representation in `components/docs/markdown.tsx` so copied guides preserve its meaning. These public documentation exports are separate from the authenticated workspace MCP server.
+
+## Preview and validate
+
+```bash title="Terminal"
+npm run dev
+npm run typecheck
+npm run build
+```
+
+Open `/docs` and verify the new page, sidebar position, search result, links, and mobile layout. `npm ci` generates the ignored `.source` directory through the postinstall hook; do not edit it manually.
+
+## Customize the design
+
+| File                            | Responsibility                                         |
+| ------------------------------- | ------------------------------------------------------ |
+| `app/docs/layout.tsx`           | Brand, sidebar, app links, and search provider         |
+| `app/docs/docs.css`             | Scoped typography, spacing, and documentation styles   |
+| `app/docs/[[...slug]]/page.tsx` | Page heading, contents, Markdown actions, and metadata |
+| `components/docs/mdx.tsx`       | Available components                                   |
+| `components/docs/overview.tsx`  | Workspace diagram and endpoint label                   |
+| `source.config.ts`              | MDX collection and processed Markdown                  |
+| `lib/docs-source.ts`            | Page tree, routing, and navigation icons               |
+
+Preserve the application's shared neutral tokens when styling the docs. Brand text comes from `config/site.ts`; diagrams and examples should match your own product's capabilities.
+
+<Callout title="Only publish public material">
+  Use placeholder origins and sample records. Keep credentials, customer data,
+  setup receipts, and internal implementation records out of `content/docs`. The
+  repository's internal `docs` directory is not part of this site's collection.
+</Callout>

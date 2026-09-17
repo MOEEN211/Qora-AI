@@ -1,0 +1,36 @@
+---
+title: Errors and retries
+description: Handle failures without exposing credentials or duplicating work.
+---
+
+REST errors have a readable `error` and a stable `code`. Responses include an `X-Request-Id` for support correlation.
+
+| Status | Meaning                                              | Action                                 |
+| ------ | ---------------------------------------------------- | -------------------------------------- |
+| 400    | Invalid input, JSON, or cursor                       | Fix the request                        |
+| 401    | Missing, expired, revoked, or invalid credential     | Reconnect or create a replacement key  |
+| 403    | Insufficient permission or disallowed browser origin | Check access or request origin         |
+| 404    | Missing workspace, disabled route, or operation      | Check configuration and connection     |
+| 409    | Workspace could not be updated                       | Read the current state before retrying |
+| 413    | Request body too large                               | Reduce the request                     |
+| 415    | MCP content type is unsupported                      | Send application/json                  |
+| 429    | Request budget exhausted                             | Honor Retry-After                      |
+| 503    | Provider or application unavailable                  | Retry with bounded exponential backoff |
+
+## Rate limits
+
+A 429 response includes `Retry-After: 60`. Use a small bounded number of retries with jitter. Repeated invalid credentials will not become valid by retrying.
+
+```http title="Rate-limit response"
+HTTP/1.1 429 Too Many Requests
+Retry-After: 60
+Cache-Control: no-store
+```
+
+## Write retries
+
+The workspace rename operation sets a value, so repeating the same request is safe. This does not mean every future operation is safe to retry. Creating records, charging payments, or triggering external actions needs an idempotency design before it is exposed.
+
+## Safe diagnostics
+
+Keep credentials, request authorization headers, and customer data out of logs, screenshots, and support tickets. Report the operation, status, request ID, and approximate time. Provider error bodies and SQL are not returned to clients.

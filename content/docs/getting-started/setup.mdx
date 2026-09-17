@@ -1,0 +1,79 @@
+---
+title: Buyer setup
+description: Install the integration in your own hosted Supabase project.
+---
+
+## Prerequisites
+
+Copy `.env.example` to `.env` and enter `SUPABASE_ACCESS_TOKEN`, `RESEND_API_KEY` (Full access), and `STRIPE_TEST_SECRET_KEY` from your Stripe sandbox. Run `npm run kickstart:check`, then `npm run kickstart`. The installer creates a hosted Supabase project in a US region, fills its URL and API keys, and installs authentication, email and sandbox billing. Restart the development server afterward. Next.js runs locally or on Vercel; Supabase always stays hosted.
+
+The first check verifies account access without provisioning. Project-specific checks are deferred until the project exists, then must pass before application installation. If you have several Supabase organizations or verified Resend domains, choose one in the terminal. Existing configured projects are reused on reruns.
+
+Kickstart uses a verified Resend sender domain when available. Otherwise local setup uses `onboarding@resend.dev`, which delivers only to the email associated with your Resend account. Verify your own sending domain before inviting other users. You can override `RESEND_FROM_EMAIL`, `SUPABASE_ORGANIZATION_SLUG`, and `SUPABASE_REGION` when needed. Default region selection stays within the US. Google OAuth and production deployment have separate account requirements.
+
+OAuth requires an asymmetric Supabase signing key (ES256 or RS256). Kickstart checks the public JWKS before making changes. The integration uses the existing publishable, server-only secret, and setup-only management credentials; it does not require a seller-operated service.
+
+Supabase currently labels its OAuth server beta. Review its current [OAuth server documentation](https://supabase.com/docs/guides/auth/oauth-server/getting-started) before a production release.
+
+## Install
+
+<Steps>
+<Step>
+
+### Install dependencies
+
+```bash title="Terminal"
+npm ci
+```
+
+</Step>
+<Step>
+
+### Check your configured services
+
+```bash title="Read-only preflight"
+npm run kickstart:check
+```
+
+Resolve each reported error before continuing. Required checks depend on the enabled features in your configuration.
+
+</Step>
+<Step>
+
+### Provision and start the application
+
+```bash
+npm run kickstart
+npm run dev
+```
+
+</Step>
+</Steps>
+
+Kickstart checks all required configured services before provisioning. It adds integration grant storage, checks protected RPC access, configures the native Supabase OAuth server and dynamic registration, sets the consent path, and installs the access-token hook. Repeated runs use the existing migration ledger and preserve keys.
+
+An existing buyer access-token hook is not overwritten. If one is configured, explicitly combine the hooks before proceeding.
+
+Read-only preflight does not prove consent, token issuance, or client compatibility. Those are separate post-install checks.
+
+## Token restrictions
+
+The access-token hook changes only OAuth-server tokens carrying a client_id. It binds them to the MCP audience, adds a connection identifier, and assigns the unprivileged anon database role. Ordinary signup, login, and refresh claims remain unchanged.
+
+Workspace access is checked again from the current application grant and membership on every MCP request. Removing the hook's restrictions can expose more than the user approved.
+
+## Deploy
+
+Deploy Next.js with the buyer's runtime credentials. Keep the Supabase management token out of the deployment. Configure the target's active APP_URL and run the documented kickstart workflow for that authorized target so OAuth consent and token audience use the deployed origin.
+
+Use `npm run kickstart:deploy` for the documented deployment workflow. Development and production share the configured hosted Supabase project and Resend templates in this template; the active Auth origin follows the latest kickstart run.
+
+Configure ingress rate controls for /api/v1 and /api/mcp before public launch. The database limiter protects authenticated credential budgets; it does not stop unauthenticated requests before they reach the server. No global in-memory limiter is claimed.
+
+## Verify
+
+Verify API key creation, REST read/rename, OAuth consent and refresh, read-only rejection, revocation, tenant isolation, and a real client connection. The test scripts use only the explicitly targeted dedicated hosted project and disposable fixtures.
+
+Changing origins invalidates OAuth tokens whose audience no longer matches. Reconnect clients after an intentional origin change.
+
+One Supabase project has one active consent origin and MCP audience in this template. Local and deployed OAuth connections cannot simultaneously use different audiences on the same project. Keep `APP_URL_DEV` and `APP_URL_LIVE` as references; `APP_URL` is the active value used during setup.

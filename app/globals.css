@@ -1,0 +1,212 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.205 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.922 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+
+@theme inline {
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+}
+
+.brand-mark { display: flex; align-items: center; gap: 3px; width: 29px; height: 28px; transform: skewY(-12deg); }
+.brand-mark span { width: 7px; background: currentColor; border-radius: 2px; }
+.brand-mark span:nth-child(1) { height: 17px; }
+.brand-mark span:nth-child(2) { height: 27px; }
+.brand-mark span:nth-child(3) { height: 21px; }
+.auth-sculpture { position: relative; height: 150px; width: 245px; perspective: 800px; }
+.auth-sculpture i { position: absolute; display: block; width: 125px; height: 125px; border: 1px solid currentColor; border-radius: 19px; transform: rotateX(38deg) rotateY(-30deg) rotateZ(28deg); opacity: .55; }
+.auth-sculpture i:nth-child(1) { left: 0; top: 0; }
+.auth-sculpture i:nth-child(2) { left: 40px; top: 13px; }
+.auth-sculpture i:nth-child(3) { left: 80px; top: 26px; }
+.auth-sculpture i:nth-child(4) { left: 120px; top: 39px; background: color-mix(in oklch, currentColor 6%, transparent); }
+.workspace-art { border-left: 1px solid var(--border); }
+.workspace-art > div { display: flex; align-items: center; gap: 12px; transform: rotate(-15deg); }
+.workspace-art span { display: block; width: 27px; border: 1px solid var(--foreground); border-radius: 6px; opacity: .6; }
+.workspace-art span:nth-child(1) { height: 70px; }
+.workspace-art span:nth-child(2) { height: 125px; background: var(--foreground); }
+.workspace-art span:nth-child(3) { height: 95px; }
+
+/* Keep the rail and its contents on one easing curve; labels fade before clipping. */
+@media (min-width: 64rem) {
+  .app-shell {
+    --sidebar-motion: 280ms cubic-bezier(.22, 1, .36, 1);
+    transition: grid-template-columns var(--sidebar-motion);
+  }
+  .app-shell[data-collapsed="true"] { grid-template-columns: 76px minmax(0, 1fr); }
+  .app-shell > aside,
+  .app-shell [data-sidebar-brand] { transition: padding var(--sidebar-motion); }
+  .app-shell [data-sidebar-brand] > a { max-width: 100%; }
+  .app-shell .brand-mark { flex-shrink: 0; }
+  .app-shell [data-sidebar-row],
+  .app-shell [data-sidebar-brand] > a {
+    transition: padding var(--sidebar-motion), gap var(--sidebar-motion), background-color 150ms ease, color 150ms ease;
+  }
+  .app-shell [data-sidebar-label] {
+    max-width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 1;
+    transition: max-width var(--sidebar-motion), opacity 180ms ease 60ms, transform var(--sidebar-motion);
+  }
+  .app-shell [data-sidebar-caption] {
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 150ms ease;
+  }
+  .app-shell[data-collapsed="true"] > aside { padding-inline: 12px; }
+  .app-shell[data-collapsed="true"] [data-sidebar-brand] { padding-inline: 11px; }
+  .app-shell[data-collapsed="true"] [data-sidebar-row],
+  .app-shell[data-collapsed="true"] [data-sidebar-brand] > a { gap: 0; }
+  .app-shell[data-collapsed="true"] [data-sidebar-row="workspace"] { padding-inline: 8.5px; }
+  .app-shell[data-collapsed="true"] [data-sidebar-row="navigation"] { padding-inline: 17.5px; }
+  .app-shell[data-collapsed="true"] [data-sidebar-label] {
+    max-width: 0;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: max-width var(--sidebar-motion), opacity 90ms ease, transform var(--sidebar-motion);
+  }
+  .app-shell[data-collapsed="true"] [data-sidebar-caption] { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* Keep only the selection slider moving while next-themes suppresses page transitions. */
+.theme-toggle-indicator {
+  transition: translate 180ms ease-out !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-indicator {
+    transition: none !important;
+  }
+}
+
+/* Chat has an edge-to-edge canvas; its shared loading state keeps page spacing. */
+.app-shell[data-chat-page="true"] [data-dashboard-loading] {
+  @apply mx-auto max-w-[1250px] px-6 py-10 lg:px-10 lg:py-12;
+}

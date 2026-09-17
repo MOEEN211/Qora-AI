@@ -1,0 +1,1 @@
+export default function Loading() { return <div role="status" className="space-y-4 p-8"><p className="text-sm text-muted-foreground">Loading administration…</p><div className="h-40 animate-pulse rounded-xl bg-muted" /></div> }

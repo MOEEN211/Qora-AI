@@ -1,0 +1,6 @@
+{
+  "title": "REST API",
+  "icon": "Braces",
+  "defaultOpen": true,
+  "pages": ["index", "workspaces", "errors"]
+}

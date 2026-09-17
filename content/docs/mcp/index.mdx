@@ -1,0 +1,46 @@
+---
+title: Connect an AI assistant
+description: Give your assistant a secure, direct connection to your workspace through MCP.
+---
+
+MCP lets an AI assistant discover tools and call them with structured arguments. This template provides a remote server at:
+
+```text title="MCP server URL"
+https://your-app.example/api/mcp
+```
+
+Copy your installation's actual URL from **Integrations → MCP**.
+
+## Choose how to connect
+
+<Cards>
+  <IconCard icon="mcp" title="Claude with OAuth" href="/docs/mcp/claude">
+    Sign in through your application, select a workspace, and approve access.
+  </IconCard>
+  <IconCard icon="key" title="Clients with API keys" href="/docs/mcp/api-keys">
+    Connect Codex or another HTTP MCP client with a workspace API key.
+  </IconCard>
+</Cards>
+
+## What can the assistant do?
+
+| Tool               | Example request                                    | Permission      |
+| ------------------ | -------------------------------------------------- | --------------- |
+| `get_workspace`    | “Show the details of my connected workspace.”      | Read            |
+| `rename_workspace` | “Rename my connected workspace to Acme Studio.”    | Read and rename |
+
+Each connection is bound to one workspace. The assistant cannot use it to inspect your other workspaces, invite members, change billing, or call the template's AI chatbot. These tools do not spend application AI credits.
+
+Read the [tool reference](/docs/mcp/tools) for exact inputs and outputs.
+
+## Transport and authorization
+
+The server uses **Streamable HTTP** and the official TypeScript MCP SDK. It supports current per-request MCP and the SDK's stateless compatibility path for older clients. Workspace context is verified for each request and is never shared in server memory between clients.
+
+OAuth uses the hosted Supabase authorization server with PKCE, token refresh, and an explicit application grant. API-key clients use the same workspace keys as REST. See [authentication and permissions](/docs/getting-started/authentication).
+
+## Manage a connection
+
+Open **Integrations → MCP → Connected applications** to disconnect an OAuth application. For API-key clients, revoke the key under **Integrations → API keys**.
+
+If a connection fails, start with the [troubleshooting guide](/docs/mcp/troubleshooting). To expose your own product features, follow [add your own operations](/docs/guides/operations).

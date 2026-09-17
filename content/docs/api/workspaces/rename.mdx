@@ -1,0 +1,79 @@
+---
+title: Rename workspace
+description: Change the connected workspace's display name with a read/write credential.
+---
+
+<Endpoint method="PATCH" path="/api/v1/workspace" permission="Read/write" />
+
+## Request
+
+<Tabs items={["curl", "TypeScript"]} groupId="docs-request-language" persist>
+<Tab value="curl">
+
+```bash title="Terminal"
+curl -X PATCH https://your-app.example/api/v1/workspace \
+  -H "Authorization: Bearer $WORKSPACE_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data '{"name":"Acme Studio"}'
+```
+
+</Tab>
+<Tab value="TypeScript">
+
+```ts title="rename-workspace.ts"
+const response = await fetch("https://your-app.example/api/v1/workspace", {
+  method: "PATCH",
+  headers: {
+    Authorization: `Bearer ${process.env.WORKSPACE_API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ name: "Acme Studio" }),
+});
+const result = await response.json();
+if (!response.ok) throw new Error(result.error);
+console.log(result.data);
+```
+
+</Tab>
+</Tabs>
+
+## Request body
+
+<TypeTable
+  type={{
+    name: {
+      type: "string",
+      required: true,
+      description:
+        "New display name. Between 2 and 80 characters after trimming whitespace.",
+    },
+  }}
+/>
+
+The body accepts only `name` and is limited to 2,048 bytes. Unknown properties return `400`; an oversized body returns `413`.
+
+<Callout type="warn" title="Requires write permission">
+  A read-only key receives `403`. Create a read/write key to use this operation.
+</Callout>
+
+## Response
+
+```json title="200 OK"
+{
+  "data": {
+    "id": "4fd7c62d-66c5-41d3-bc28-6b5ec0c17322",
+    "name": "Acme Studio",
+    "slug": "WRK7M2Q9A4X1B"
+  }
+}
+```
+
+The operation changes the display name. The ID, readable identifier, members, and billing stay the same. Refresh the application to see a change made by an external client.
+
+## Retry behavior
+
+Repeating the same rename is safe because it sets a value. Simultaneous renames use the last successful write. Read the current workspace if you need to reconcile a conflicting change; see [errors and retries](/docs/api/errors).
+
+## MCP equivalent
+
+Call [`rename_workspace`](/docs/mcp/tools#rename_workspace) with `{ "name": "Acme Studio" }`. The OAuth connection must have **Read and rename** access, or the client must use a read/write key.

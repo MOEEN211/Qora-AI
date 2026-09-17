@@ -1,0 +1,40 @@
+---
+title: SEO and AI discovery
+description: Customize metadata, search indexing, social previews, and Markdown exports for your product.
+---
+
+The starter includes reusable SEO helpers and public files that help search crawlers and AI assistants understand your site.
+
+## Make it your own
+
+Edit `config/site.ts` for the name and general description, `config/marketing.ts` for public copy, and `config/seo.ts` for language, social image and public routes. Review `/social-image` and replace the favicon with your own branding.
+
+Set `APP_URL` to your final HTTPS origin. Keep `SEO_INDEXABLE=false` during customization. Set it to `true` in your production build environment and rebuild only when ready to launch. Local development and Vercel previews remain noindex. Saved development/live URLs do not change the active origin.
+
+## Add metadata to a page
+
+```tsx
+import { publicMetadata } from "@/lib/seo/metadata"
+
+export const metadata = publicMetadata({
+  title: "Your feature",
+  description: "Describe what the feature does for the reader.",
+  path: "/your-feature",
+})
+```
+
+Register the real route in `config/seo.ts`. Documentation is discovered automatically from this public content collection. Published blog posts are discovered through the public reader. Keep drafts outside `content/docs`; hiding a page from navigation does not make it private.
+
+The helper provides canonical URLs, Open Graph, Twitter cards and launch-aware indexing. Blog pagination keeps its own canonical URL. Structured data must describe visible content accurately; do not add fictional reviews, prices or unsupported claims.
+
+## Give assistants readable content
+
+Start at [llms.txt](/llms.txt) for links to Markdown documentation, the [product summary](/index.md), [blog index](/blog/index.md), and [OpenAPI schema](/api/openapi). [Full documentation](/llms-full.txt) combines the product summary and all public docs. HTML pages advertise Markdown alternatives where available.
+
+The conventional filename is `llms.txt`. It is an optional discovery proposal; AI search does not require it. Existing API and MCP authorization still applies. These files contain public information only.
+
+## Check your launch
+
+Inspect page titles, descriptions, canonical URLs and social previews. Confirm that [robots.txt](/robots.txt) and [sitemap.xml](/sitemap.xml) reflect your release configuration. Private pages and sample legal text stay excluded. Search inclusion and rich results depend on the search provider.
+
+For implementation boundaries, tests and extension details, read `docs/SEO.md` in your repository.

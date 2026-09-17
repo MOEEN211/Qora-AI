@@ -1,0 +1,5 @@
+{
+  "title": "Workspaces",
+  "defaultOpen": true,
+  "pages": ["get", "rename"]
+}

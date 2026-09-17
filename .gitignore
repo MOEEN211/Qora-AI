@@ -1,0 +1,53 @@
+# Credentials and private environment files; keep only the empty example.
+.env
+.env.*
+.env.*.tmp
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# Local dependencies and build output.
+node_modules/
+.next/
+.source/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Provider linkage, generated setup progress, and local credentials.
+.vercel/
+.kickstart/
+supabase/.temp/
+supabase/.branches/
+.secrets/
+*.pem
+*.key
+
+# Tests and logs; review/redact before sharing reports.
+coverage/
+playwright-report/
+test-results/
+blob-report/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor and operating-system artifacts.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Local scratch files.
+work/
+tmp/
+
+# Generated release material and local captures.
+artifacts/
+release/
+*.zip

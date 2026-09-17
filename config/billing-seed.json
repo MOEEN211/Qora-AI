@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "currency": "usd",
+  "plans": [
+    {
+      "key": "starter",
+      "name": "Starter",
+      "description": "A simple start for your business.",
+      "month": 1900,
+      "year": 19000
+    },
+    {
+      "key": "pro",
+      "name": "Pro",
+      "description": "Room for your next chapter.",
+      "month": 4900,
+      "year": 49000
+    },
+    {
+      "key": "growth",
+      "name": "Growth",
+      "description": "Built for an expanding business.",
+      "month": 9900,
+      "year": 99000
+    }
+  ]
+}

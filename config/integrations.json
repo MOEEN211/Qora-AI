@@ -1,0 +1,6 @@
+{
+  "apiEnabled": true,
+  "mcpEnabled": true,
+  "oauthEnabled": true,
+  "operations": ["get_workspace", "rename_workspace"]
+}

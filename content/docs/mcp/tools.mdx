@@ -1,0 +1,56 @@
+---
+title: Tool reference
+description: Two explicit tools, with strict inputs and structured JSON results.
+---
+
+The MCP server advertises the tools enabled in your configuration and permitted by the connection. All inputs reject unknown fields. Tools return structured JSON and a text representation of the same result.
+
+## get_workspace
+
+**Permission:** Read. Accepts an empty object; the credential selects the workspace.
+
+```json title="Arguments"
+{}
+```
+
+```json title="Structured result"
+{
+  "id": "4fd7c62d-66c5-41d3-bc28-6b5ec0c17322",
+  "name": "Acme Studio",
+  "slug": "WRK7M2Q9A4X1B",
+  "created_at": "2026-01-15T10:30:00+00:00"
+}
+```
+
+REST equivalent: [GET /api/v1/workspace](/docs/api/workspaces/get).
+
+## rename_workspace
+
+**Permission:** Read and rename (OAuth), or Read/write (API key).
+
+```json title="Arguments"
+{ "name": "Acme Studio" }
+```
+
+`name` is required and must contain 2–80 characters after trimming whitespace. It changes only the display name. Repeating the same rename is safe.
+
+```json title="Structured result"
+{
+  "id": "4fd7c62d-66c5-41d3-bc28-6b5ec0c17322",
+  "name": "Acme Studio",
+  "slug": "WRK7M2Q9A4X1B"
+}
+```
+
+REST equivalent: [PATCH /api/v1/workspace](/docs/api/workspaces/rename).
+
+<Callout title="Permissions are enforced on the server">
+  Read-only connections do not advertise `rename_workspace`. Calling it directly
+  cannot bypass authorization.
+</Callout>
+
+## Error behavior
+
+Application failures return `isError: true`. Malformed protocol messages use MCP protocol errors. Authentication fails at the HTTP layer with `401` and OAuth discovery information when enabled.
+
+MCP discovery and protocol requests count toward the connection's 60-request per-minute budget. See [errors and retries](/docs/api/errors) for safe retry behavior.

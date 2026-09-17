@@ -1,0 +1,76 @@
+---
+title: Add your own operations
+description: Extend one shared service, then expose it through REST and MCP.
+---
+
+The integration example is intentionally small. Explicit schemas, permissions, and handlers are easier to customize than a framework that automatically publishes every function.
+
+## Where the code lives
+
+<Files>
+  <Folder name="lib" defaultOpen>
+    <Folder name="integrations" defaultOpen>
+      <File name="schema.ts" />
+      <File name="auth.ts" />
+      <File name="workspace.ts" />
+      <File name="http.ts" />
+    </Folder>
+    <Folder name="mcp" defaultOpen>
+      <File name="server.ts" />
+      <File name="handler.ts" />
+    </Folder>
+  </Folder>
+  <Folder name="app/api/v1">
+    <File name="route adapters" />
+  </Folder>
+  <Folder name="config">
+    <File name="integrations.json" />
+  </Folder>
+</Files>
+
+| File                                     | Responsibility                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------ |
+| lib/integrations/schema.ts               | Inputs, outputs, names, descriptions, permissions                  |
+| lib/integrations/auth.ts                 | Credential verification and trusted workspace context              |
+| lib/integrations/workspace.ts            | Shared operations and scoped database access                       |
+| lib/integrations/http.ts                 | Safe HTTP responses and request bounds                             |
+| lib/mcp/server.ts and lib/mcp/handler.ts | Request-scoped server, tool registration and MCP result formatting |
+| app/api/v1                               | REST adapters                                                      |
+| config/integrations.json                 | Enabled surfaces and operation allowlist                           |
+
+MCP calls the shared functions directly. It does not call the REST endpoint over HTTP, and it does not consume the authentication quota again inside each tool.
+
+## Add an operation to the existing workspace domain
+
+1. Define a strict input schema and output schema in `schema.ts`.
+2. Describe the operation and explicitly require read or write permission.
+3. Implement it behind the shared service boundary, deriving the workspace from the authenticated principal.
+4. Add its name to the configuration allowlist and the supported-operation check in `scripts/kickstart/integrations.mjs`.
+5. Add a small REST adapter and its OpenAPI mapping if it should also be available through HTTP.
+6. Add documentation, cross-workspace tests, permission tests, and a real MCP client check.
+
+Keep the ordinary dashboard on its verified user session and RLS. The external service encapsulates privileged queries and must filter every query by the credential's workspace.
+
+## Add a new domain
+
+For a feature such as documents, first add versioned tenant-owned tables and RLS through kickstart. Then introduce explicit document grants and consent/key controls.
+
+**Existing read/write keys authorize only the workspace operations in this template.** Do not reuse those labels to silently grant access to documents, billing, members, or future product data. Add a deliberate capability migration before exposing a new domain.
+
+Paginate lists, bound input/output sizes, and design idempotency for non-idempotent writes. Tool annotations describe behavior to clients; the server remains responsible for enforcing it.
+
+## Isolation checklist for each operation
+
+- Workspace A cannot read or change B, including forged IDs and cursors.
+- A read-only credential cannot write.
+- Revoked credentials and removed memberships stop working.
+- Concurrent calls never share another request's principal.
+- Failures do not leak SQL, credentials, or another tenant's existence.
+
+## Disable or remove the example
+
+Set `mcpEnabled` or `apiEnabled` to false in `config/integrations.json` to disable that surface. Remove operation names to disable individual operations.
+
+To remove MCP entirely, remove its routes, consent UI, settings connection component, and unused SDK packages. Keep workspace operations required by the dashboard. Do not drop workspace/auth/billing tables. Deleting grant/key storage requires a separate reviewed migration; preserve released migration files.
+
+Use [the documentation authoring guide](/docs/guides/documentation) to document your new feature.

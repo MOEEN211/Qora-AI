@@ -1,0 +1,57 @@
+---
+title: Troubleshooting
+description: Resolve connection, authorization, and tool-discovery problems.
+---
+
+Start with the symptom you see. When sharing a diagnostic, include the operation, status, request ID, and approximate time; keep credentials and customer data private.
+
+## Connection setup
+
+<Accordions type="multiple">
+<Accordion title="The client cannot discover the server">
+
+Confirm that the full URL ends in `/api/mcp`, that the app is reachable from the client, and that `mcpEnabled` is true in `config/integrations.json`. For OAuth, kickstart must have configured discovery and the hosted authorization server. Claude's cloud cannot connect to your machine's localhost URL.
+
+</Accordion>
+<Accordion title="Sign-in works, but consent fails">
+
+Confirm that the account is an Owner or Admin of the selected workspace. Restart authorization from the client to get a fresh request. Check that the app's active `APP_URL` matches its deployed origin and configured consent URL.
+
+</Accordion>
+<Accordion title="Kickstart reports an existing OAuth token hook">
+
+Kickstart preserves a buyer's existing access-token hook. Combine its logic with the MCP token restrictions before proceeding: OAuth tokens need the MCP audience, connection identifier, and unprivileged database role. Follow [buyer setup](/docs/getting-started/setup).
+
+</Accordion>
+</Accordions>
+
+## Access and tools
+
+<Accordions type="multiple">
+<Accordion title="Requests return 401 after connecting">
+
+Reconnect the client. For API keys, check the environment of the process running the client and whether the key expired or was revoked. For OAuth, verify the issuer, audience, active session, and connection grant on the server without logging tokens. An intentional application-origin change requires reauthorization.
+
+</Accordion>
+<Accordion title="Reads work, but rename is missing or denied">
+
+The connection is read-only, or `rename_workspace` is disabled in the operation allowlist. Use a read/write key or reconnect with **Read and rename** access. The selected account must still be an Owner or Admin.
+
+</Accordion>
+<Accordion title="I need access to another workspace">
+
+This is the expected scope. A connection is authorized for one workspace, even if its creator belongs to several. Authorize a separate connection or create a key in the other workspace to access it.
+
+</Accordion>
+<Accordion title="The app shows Access removed and Finish disconnect">
+
+Local access has already been blocked. **Finish disconnect** retries cleanup at the Supabase authorization server. Complete cleanup before reconnecting. Old refresh sessions remain tied to their original grant and cannot revive it.
+
+</Accordion>
+</Accordions>
+
+## Rate limits
+
+A `429` response means the connection has used its request budget. Wait for `Retry-After` and use bounded retries with jitter. Discovery requests count toward the budget too. REST and MCP share a budget when they use the same API key.
+
+See [errors and retries](/docs/api/errors) for the complete status reference.

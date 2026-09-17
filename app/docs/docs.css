@@ -1,0 +1,358 @@
+/* Documentation-only styling; application design tokens stay shared. */
+.forma-docs {
+  --fd-layout-width: 1480px;
+  --color-fd-background: var(--background);
+  --color-fd-foreground: var(--foreground);
+  --color-fd-primary: var(--foreground);
+  --color-fd-primary-foreground: var(--background);
+  --color-fd-border: var(--border);
+  font-size: 15px;
+}
+.docs-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.8px;
+}
+.docs-brand .brand-mark {
+  width: 23px;
+  height: 23px;
+}
+.docs-brand-label {
+  margin-left: 2px;
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--muted-foreground);
+  font:
+    11px var(--font-geist-mono),
+    monospace;
+  letter-spacing: 0;
+}
+.docs-sidebar-guide {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding: 14px 4px 5px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.docs-sidebar-guide:hover {
+  color: var(--foreground);
+}
+.docs-sidebar-guide > span {
+  flex: 1;
+}
+.forma-docs #nd-sidebar {
+  background: var(--background);
+}
+.forma-docs #nd-page {
+  padding-bottom: 48px;
+}
+.forma-docs .docs-page-header {
+  margin-bottom: 10px;
+}
+.forma-docs .docs-page-header h1 {
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.2;
+  letter-spacing: -1.25px;
+  font-weight: 650;
+  text-wrap: balance;
+}
+.forma-docs .docs-page-header > p:not(.docs-eyebrow) {
+  margin: 16px 0 0;
+  max-width: 660px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.forma-docs .docs-home {
+  max-width: 1060px;
+}
+.forma-docs .docs-home .docs-page-header {
+  padding: 16px 0 6px;
+}
+.forma-docs .docs-home h1 {
+  max-width: 760px;
+  font-size: clamp(34px, 4.1vw, 54px);
+  letter-spacing: -2.2px;
+  line-height: 1.1;
+}
+.docs-eyebrow {
+  margin: 0 0 20px;
+  font:
+    10px var(--font-geist-mono),
+    monospace;
+  color: var(--muted-foreground);
+  letter-spacing: 1.8px;
+}
+.docs-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+  font-size: 12px;
+}
+.docs-page-actions > a {
+  color: var(--muted-foreground);
+}
+.docs-page-actions > a:hover {
+  color: var(--foreground);
+}
+.docs-page-actions button {
+  font-size: 11px;
+  min-height: 30px;
+}
+.forma-docs .prose {
+  line-height: 1.85;
+}
+.forma-docs .prose h2 {
+  font-size: 21px;
+  letter-spacing: -0.6px;
+  margin-top: 2.4em;
+}
+.forma-docs .prose h3 {
+  font-size: 16px;
+  letter-spacing: -0.25px;
+}
+.forma-docs .prose p {
+  color: var(--muted-foreground);
+}
+.forma-docs .prose p strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.forma-docs .prose figure {
+  font-size: 12px;
+}
+.forma-docs .prose [data-card] {
+  box-shadow: none;
+}
+.docs-endpoint {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  margin: 6px 0 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--muted);
+}
+.docs-endpoint code {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.docs-method {
+  flex: none;
+  font:
+    600 10px var(--font-geist-mono),
+    monospace;
+  letter-spacing: 0.4px;
+  color: light-dark(#176543, #82d5ad);
+}
+.docs-method[data-method="PATCH"] {
+  color: light-dark(#925b14, #e8b774);
+}
+.docs-permission {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.docs-flow {
+  margin: 16px 0 32px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.docs-flow-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 22px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font:
+    9px var(--font-geist-mono),
+    monospace;
+  letter-spacing: 1px;
+}
+.docs-flow-caption > :last-child {
+  letter-spacing: 0;
+}
+.docs-flow-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.95fr 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 30px 25px;
+  background: color-mix(in oklch, var(--muted) 38%, var(--background));
+}
+.docs-flow-interface {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 13px;
+  font-size: 11px;
+}
+.docs-flow-interface code {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.docs-flow-interface code span {
+  width: 35px;
+  font-size: 10px;
+  color: var(--foreground);
+}
+.docs-flow-label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.docs-flow-label > svg:last-child {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  transition: transform 160ms;
+}
+.docs-flow-interface:hover .docs-flow-label > svg:last-child {
+  transform: translateX(3px);
+  color: var(--foreground);
+}
+.docs-flow-workspace {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px 10px 16px;
+  background: var(--background);
+  box-shadow: 0 4px 20px #00000004;
+}
+.docs-flow-workspace strong {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.docs-flow-workspace > span {
+  color: var(--muted-foreground);
+  font:
+    9px var(--font-geist-mono),
+    monospace;
+}
+.docs-flow-workspace > div {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding-top: 6px;
+  font-size: 9px;
+  color: var(--muted-foreground);
+}
+.docs-flow-footer {
+  border-top: 1px solid var(--border);
+  padding: 12px 22px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.docs-quick-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+.docs-quick-links a {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  text-decoration: none;
+}
+.docs-quick-links a:nth-child(odd) {
+  margin-right: 26px;
+}
+.docs-quick-links span {
+  color: var(--muted-foreground);
+}
+.docs-quick-links a > p {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .forma-docs .docs-home .docs-page-header {
+    padding-top: 6px;
+  }
+  .forma-docs .docs-page-header h1 {
+    letter-spacing: -1px;
+  }
+  .forma-docs .docs-page-header > p:not(.docs-eyebrow) {
+    font-size: 15px;
+  }
+  .docs-flow-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 18px;
+    padding: 20px;
+  }
+  .docs-flow-workspace {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    padding: 15px;
+  }
+  .docs-flow-caption {
+    padding: 13px 16px;
+    font-size: 8px;
+  }
+  .docs-flow-caption > :last-child {
+    display: none;
+  }
+  .docs-flow-interface code {
+    font-size: 9px;
+    gap: 5px;
+  }
+  .docs-flow-label {
+    font-size: 11px;
+  }
+  .docs-flow-label > svg:last-child {
+    display: none;
+  }
+  .docs-flow-footer {
+    font-size: 10px;
+    padding: 12px 16px;
+  }
+  .docs-endpoint {
+    gap: 10px;
+    padding: 12px;
+  }
+  .docs-permission {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+  .docs-quick-links {
+    grid-template-columns: 1fr;
+  }
+  .docs-quick-links a:nth-child(odd) {
+    margin-right: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .docs-flow-label > svg:last-child {
+    transition: none;
+  }
+}

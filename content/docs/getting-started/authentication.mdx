@@ -1,0 +1,51 @@
+---
+title: Authentication & permissions
+description: Sign in to your account, use API keys for scripts, and authorize assistant connections.
+---
+
+## Sign in to your account
+
+Sign in with your password, choose **Magic link** to receive a one-time email link, or use **Continue with Google** when enabled. The signup page supports the same methods. Open the emailed link and press **Sign in and continue**; expired or used links can be requested again. Invited accounts should use the invited email address with a password or magic link.
+
+Supabase manages authentication. Site owners configure Google credentials only in hosted Supabase Authentication → Sign In / Providers → Google. Google credentials are never needed in the application environment.
+
+If you signed up without a password, **Settings → Security → Set a password by email** lets you establish one before password-confirmed changes or deletion.
+
+## Workspace API keys
+
+Owners and admins create keys in **Integrations → API keys**. Give each script or service its own named key. Choose read-only or read/write permission and an expiration: 30 days, 90 days, one year, or Never. The default is 90 days.
+
+The secret is revealed once. Store it in your client's secret manager or environment; the application stores only its hash. If you lose it, revoke the old key and create another.
+
+Send it in the Authorization header:
+
+```http
+Authorization: Bearer YOUR_WORKSPACE_API_KEY
+```
+
+Browser cookies, Supabase publishable keys, Supabase secret keys, and management tokens are not application API credentials. Never put a credential in a URL.
+
+## OAuth connections
+
+For Claude, Supabase handles the authorization-code flow, PKCE, token issuance, and refresh. The application's consent screen binds access to one workspace and offers:
+
+- **Read only:** list the workspace's ID and read its details.
+- **Read and rename:** the same reads, plus changing its display name.
+
+Supabase currently exposes identity scopes rather than application-specific workspace scopes. Workspace permissions are stored and enforced in the application's connection grant; they are not inferred from an identity scope such as `openid`.
+
+OAuth access tokens are intended for this application's MCP URL. They do not work as REST API keys or as ordinary application database credentials. The server checks signature, issuer, audience, current session, current membership, and the active grant.
+
+## Revoke access
+
+Revoke a key from its row in Integrations → API keys. Disconnect OAuth applications under **Integrations → MCP → Connected applications**.
+
+Expired or revoked credentials stop authorizing new calls. Removing a member, demoting them to Member, deleting their account, or deleting the workspace also removes their integration access. Rejoining does not revive a revoked connection.
+
+Already-authorized requests can finish during revocation. Disconnecting blocks access locally before attempting Supabase token cleanup. If cleanup fails, or your workspace role changes, the row shows **Access removed** and a **Finish disconnect** button. Complete that step before reconnecting. Old refresh sessions stay bound to their original grant and cannot revive it.
+
+## Limits
+
+Each API key permits 60 authenticated requests per minute, shared between REST and MCP. Each OAuth connection has its own 60-request budget. MCP discovery and protocol requests count too. A workspace may have up to 20 active API keys, including non-expiring keys.
+
+See [errors and retries](/docs/api/errors) for rate-limit responses.

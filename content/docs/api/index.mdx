@@ -1,0 +1,47 @@
+---
+title: REST API reference
+description: A small JSON API for reading and renaming your connected workspace.
+---
+
+Base URL: `https://your-app.example/api/v1`.
+
+All requests require a [workspace API key](/docs/getting-started/authentication). Use your application's origin in place of `https://your-app.example`. Each key authorizes one workspace.
+
+## Workspace endpoints
+
+<Cards>
+  <Card title="Get workspace" href="/docs/api/workspaces/get">
+    GET /workspace — read the connected workspace's details.
+  </Card>
+  <Card title="Rename workspace" href="/docs/api/workspaces/rename">
+    PATCH /workspace — update the display name.
+  </Card>
+</Cards>
+
+## Request conventions
+
+| Convention     | Contract                                                          |
+| -------------- | ----------------------------------------------------------------- |
+| Authentication | `Authorization: Bearer YOUR_WORKSPACE_API_KEY`                    |
+| Request body   | JSON for rename; no body for reads                                |
+| Responses      | JSON; successful reads and writes use a `data` envelope           |
+| Caching        | `Cache-Control: no-store`                                         |
+| Permissions    | Read-only keys can read; read/write keys can also rename |
+| Rate budget    | 60 authenticated requests per minute per key, shared with MCP     |
+
+Unknown input fields and unsupported query parameters are rejected. A workspace ID in a request does not select a different workspace: the credential determines access.
+
+<Callout title="New to the API?">
+  Follow [make your first request](/docs/getting-started/quickstart) for key
+  creation and a working example.
+</Callout>
+
+## OpenAPI schema
+
+The [OpenAPI 3.1 document](/api/openapi) describes the enabled endpoints. Its validation schemas come from the same Zod definitions as the implementation, so there is one contract to extend.
+
+Import it into your API client or use it with your preferred client generator. It contains no credentials. The endpoint descriptions here cover permissions, examples, and behavior that a schema alone cannot explain.
+
+## Errors and retries
+
+Failures include a readable `error`, a stable `code`, and an `X-Request-Id` response header. Review [errors and retries](/docs/api/errors) before adding automatic retry behavior.

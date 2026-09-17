@@ -1,0 +1,49 @@
+---
+title: Build on your workspace
+description: Connect your scripts, tools, and AI assistants to one secure workspace. Start with two useful operations, then make them your own.
+icon: BookOpen
+full: true
+---
+
+<WorkspaceFlow />
+
+<Cards>
+  <IconCard
+    icon="api"
+    title="Build with the REST API"
+    href="/docs/getting-started/quickstart"
+  >
+    Create a key, make your first request, and get your workspace ID.
+  </IconCard>
+  <IconCard icon="mcp" title="Connect an AI assistant" href="/docs/mcp/claude">
+    Connect Claude with OAuth or bring an API key to your MCP client.
+  </IconCard>
+</Cards>
+
+## A small, useful starting point
+
+The template exposes two workspace operations through both interfaces. Each connection has explicit permissions and access to one workspace.
+
+| Operation                                       | What you can do                              | Permission |
+| ----------------------------------------------- | -------------------------------------------- | ---------- |
+| [Get workspace](/docs/api/workspaces/get)       | Read its name, identifier, and creation date | Read       |
+| [Rename workspace](/docs/api/workspaces/rename) | Update its display name                      | Read/write |
+
+## Find your next step
+
+<div className="docs-quick-links not-prose">
+  <a href="/docs/getting-started/setup">
+    Install your template <span>01 →</span>
+  </a>
+  <a href="/docs/getting-started/authentication">
+    Understand permissions <span>02 →</span>
+  </a>
+  <a href="/docs/guides/operations">
+    Add your own operations <span>03 →</span>
+  </a>
+  <a href="/docs/guides/documentation">
+    Make these docs your own <span>04 →</span>
+  </a>
+</div>
+
+Your infrastructure stays in your accounts. The API and MCP use the same application services and hosted Supabase project; no service operated by the template seller is required.
