@@ -1,5 +1,6 @@
 export const site = {
-  name: process.env.APP_NAME || "Forma",
+  name: process.env.APP_NAME && process.env.APP_NAME !== "Forma" ? process.env.APP_NAME : "Qora.ai",
   description:
-    "A Next.js SaaS starter with authentication, workspaces, subscription billing, and customizable UI.",
+    "Qora.ai — Intelligent Next.js platform with modern workspaces, AI-driven automation, and subscription billing.",
 }
+

@@ -13,9 +13,9 @@ export const marketing = {
   ],
   faqs: [
     {
-      question: "What exactly is Forma?",
+      question: "What exactly is Qora.ai?",
       answer:
-        "Forma is a Next.js SaaS starter with authentication, organizations, Stripe subscription billing, and a customizable interface. You get application source code and setup documentation, so you can build your product without implementing those systems from scratch.",
+        "Qora.ai is a modern SaaS platform with AI-enhanced workflows, team workspaces, Stripe subscription billing, and a sleek, customizable interface. You get complete source code and rapid setup documentation to build and launch your product effortlessly.",
     },
     {
       question: "Do I need to know how to code?",

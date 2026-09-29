@@ -50,14 +50,14 @@ export default async function Home() {
         <div className="hero-copy">
           <a href="#product" className="hero-eyebrow">
             <span className="mini-brand" aria-hidden="true">
-              f.
+              Q
             </span>{" "}
-            Next.js SaaS starter <ArrowRight size={12} />
+            Qora.ai Platform <ArrowRight size={12} />
           </a>
           <h1 id="hero-title">
-            Build your SaaS.
+            Build smarter with Qora.ai.
             <br />
-            <span>Skip the boilerplate.</span>
+            <span>Power your ideas.</span>
           </h1>
           <p>{marketing.description}</p>
           <div className="marketing-actions">

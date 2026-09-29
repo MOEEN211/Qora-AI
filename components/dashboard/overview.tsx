@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
+import { QuickSpark } from "@/components/dashboard/quick-spark"
 
 export type OverviewData = {
   name: string
@@ -147,6 +148,7 @@ export function Overview({
           </Card>
         ))}
       </div>
+      <QuickSpark />
       <div className="grid gap-6 xl:grid-cols-[1.15fr_1fr]">
         <Card>
           <CardHeader>
